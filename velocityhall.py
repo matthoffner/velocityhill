@@ -22,7 +22,7 @@ for letter in alpha:
 	numb = int(asdf)
 	x = 0
 	while x < numb:
-		for i in range(3,13):
+		for i in range(3,14):
 			try:
 				addr = browser.find_element_by_css_selector("body > div > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(8) > tbody > tr:nth-child(%d) > td > a"%i)
 				addr.click()
