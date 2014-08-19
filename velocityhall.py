@@ -17,31 +17,32 @@ for letter in alpha:
 	links = browser.find_elements_by_xpath("/html/body/div/table[2]/tbody/tr[1]/td[2]/table[3]/tbody/tr/td/a")
 	soup = BeautifulSoup(browser.page_source)
 	total = soup.find("td",{"class":"HighlightTextInvert"})
-	top = total.text.rsplit(" ")
-	asdf = top[-1]
-	numb = int(asdf)
+	top = total.text.rsplit(" ")[-1]
+	numb = int(top)
 	x = 0
 	while x < numb:
 		for i in range(3,14):
 			try:
 				addr = browser.find_element_by_css_selector("body > div > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(8) > tbody > tr:nth-child(%d) > td > a"%i)
 				addr.click()
-				perms = browser.find_elements_by_css_selector("body > div > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > table:nth-child(8) > tbody > tr > td:nth-child(1) > a")
-				for z in perms:
-					try:
-						z.click()
-						soup = BeautifulSoup(browser.page_source)
-						td = soup.findAll("td",{"width":"47%"},{"valign":"top"})
-						info = []
-						for ok in td:
-							content = re.sub("\n\s\s*","",ok.text.strip())
-							info.append(content)
-						print "\"" + "\",\"".join(info) + "\"\n"
-						f.write("\"" + "\",\"".join(info) + "\"\n")	
-						browser.back()
-					except:
-						continue
-				time.sleep(1)
+				print i
+				perms = browser.find_elements_by_xpath("/html/body/div/table[2]/tbody/tr[1]/td[2]/table[4]/tbody/tr/td[1]/a")
+				list_of_links = []
+				for link in perms:
+					list_of_links.append(link.text)
+				print list_of_links
+				for z in list_of_links:
+					browser.find_element_by_link_text(z).click()
+					soup = BeautifulSoup(browser.page_source)
+					td = soup.findAll("td",{"width":"47%"},{"valign":"top"})
+					info = []
+					for ok in td:
+						content = re.sub("\n\s\s*","",ok.text.strip())
+						info.append(content)
+					print "\"" + "\",\"".join(info) + "\"\n"
+					f.write("\"" + "\",\"".join(info) + "\"\n")	
+					browser.back()
+					time.sleep(1)
 				browser.back()
 			except:
 				pass
